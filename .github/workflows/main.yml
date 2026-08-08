@@ -1,0 +1,61 @@
+name: GiftLink CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint_js:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install JSHint
+        run: npm install jshint
+
+      - name: Run JSHint
+        run: |
+          ./node_modules/.bin/jshint giftlink-backend/*.js
+          ./node_modules/.bin/jshint giftlink-backend/routes/*.js
+          ./node_modules/.bin/jshint giftlink-backend/models/*.js
+          ./node_modules/.bin/jshint sentiment/*.js
+
+      - name: Linting completed
+        run: echo "Linting completed successfully"
+
+  client_build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Change to frontend directory
+        run: cd giftlink-frontend
+
+      - name: Install packages
+        working-directory: giftlink-frontend
+        run: npm install
+
+      - name: Build client
+        working-directory: giftlink-frontend
+        run: npm run build
+
+      - name: Build completed successfully
+        run: echo "Client build completed successfully"
