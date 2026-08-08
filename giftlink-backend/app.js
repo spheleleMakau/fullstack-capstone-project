@@ -3,8 +3,15 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const pinoLogger = require('./logger');
+<<<<<<< ours
 const connectToDatabase = require('./models/db');
 const { loadData } = require("./util/import-mongo/index");
+=======
+const authRoutes = require('./routes/authRoutes');
+const connectToDatabase = require('./models/db');
+const {loadData} = require("./util/import-mongo/index");
+app.use('/auth', authRoutes);
+>>>>>>> theirs
 
 const app = express();
 
